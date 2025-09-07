@@ -192,5 +192,15 @@ class DemoTest {
         assertEquals(Direction.N, currentLocation.getDirection());
     }
 
+    @Test
+    void should_move_to_0_1_S_when_execute_command_B_given_initial_position_0_0_S() {
+        MarsRover marsRover = new MarsRover(new Location(0, 0, Direction.S));
+        marsRover.executeCommand(Command.B);
+        Location currentLocation = marsRover.getCurrentLocation();
+        assertEquals(0, currentLocation.getX());
+        assertEquals(1, currentLocation.getY());
+        assertEquals(Direction.S, currentLocation.getDirection());
+    }
+
     }
 
