@@ -18,68 +18,94 @@ public class MarsRover {
             turnLeft();
         } else if (command == Command.R) {
             turnRight();
+        }else if (command == Command.B) {
+                moveBackward();
+
         }
     }
 
-    private void moveForward() {
-        int newX = currentLocation.getX();
-        int newY = currentLocation.getY();
-
-        if (currentLocation.getDirection() == Direction.N) {
-            newY += 1;
-        } else if (currentLocation.getDirection() == Direction.E) {
-            newX += 1;
-        } else if (currentLocation.getDirection() == Direction.S) {
-            newY -= 1;
-        } else if (currentLocation.getDirection() == Direction.W) {
-            newX -= 1;
+    public void executeCommands(Command[] commands) {
+        for (Command command : commands) {
+            executeCommand(command);
         }
-        currentLocation = new Location(newX, newY, currentLocation.getDirection());
-    }
-
-    private void turnLeft() {
-        Direction newDirection;
-        Direction currentDirection = currentLocation.getDirection();
-
-        if (currentDirection == Direction.N) {
-            newDirection = Direction.W;
-        } else if (currentDirection == Direction.W) {
-            newDirection = Direction.S;
-        } else if (currentDirection == Direction.S) {
-            newDirection = Direction.E;
-        } else if (currentDirection == Direction.E) {
-            newDirection = Direction.N;
-        } else {
-            newDirection = currentDirection;
-        }
-
-        currentLocation = new Location(
-                currentLocation.getX(),
-                currentLocation.getY(),
-                newDirection
-        );
     }
 
     private void turnRight() {
-        Direction newDirection;
-        Direction currentDirection = currentLocation.getDirection();
+        Direction newDirection = calculateNewDirectionAfterRightTurn();
+        updateLocationWithNewDirection(newDirection);
+    }
 
+    private void turnLeft() {
+        Direction newDirection = calculateNewDirectionAfterLeftTurn();
+        updateLocationWithNewDirection(newDirection);
+    }
+
+    private void moveForward() {
+        Direction currentDirection = getCurrentDirection();
+        int[] newCoordinates = calculateNewCoordinates(currentDirection, 1);  // 前进为正方向
+        currentLocation = new Location(newCoordinates[0], newCoordinates[1], currentDirection);
+    }
+
+
+    private void moveBackward() {
+        Direction currentDirection = getCurrentDirection();
+        int[] newCoordinates = calculateNewCoordinates(currentDirection, -1);  // 后退为反方向
+        currentLocation = new Location(newCoordinates[0], newCoordinates[1], currentDirection);
+    }
+
+    private Direction getCurrentDirection() {
+        return currentLocation.getDirection();
+    }
+
+    private Direction calculateNewDirectionAfterRightTurn() {
+        Direction currentDirection = getCurrentDirection();
         if (currentDirection == Direction.N) {
-            newDirection = Direction.E;
+            return Direction.E;
         } else if (currentDirection == Direction.E) {
-            newDirection = Direction.S;
+            return Direction.S;
         } else if (currentDirection == Direction.S) {
-            newDirection = Direction.W;
-        } else if (currentDirection == Direction.W) {
-            newDirection = Direction.N;
+            return Direction.W;
         } else {
-            newDirection = currentDirection;
+            return Direction.N;
         }
+    }
 
+    private Direction calculateNewDirectionAfterLeftTurn() {
+        Direction currentDirection = getCurrentDirection();
+        if (currentDirection == Direction.N) {
+            return Direction.W;
+        } else if (currentDirection == Direction.W) {
+            return Direction.S;
+        } else if (currentDirection == Direction.S) {
+            return Direction.E;
+        } else {
+            return Direction.N;
+        }
+    }
+
+    private void updateLocationWithNewDirection(Direction newDirection) {
         currentLocation = new Location(
                 currentLocation.getX(),
                 currentLocation.getY(),
                 newDirection
         );
+    }
+
+
+    private int[] calculateNewCoordinates(Direction direction, int step) {
+        int newX = currentLocation.getX();
+        int newY = currentLocation.getY();
+
+        if (direction == Direction.N) {
+            newY += step;
+        } else if (direction == Direction.E) {
+            newX += step;
+        } else if (direction == Direction.S) {
+            newY -= step;
+        } else if (direction == Direction.W) {
+            newX -= step;
+        }
+
+        return new int[]{newX, newY};
     }
 }
