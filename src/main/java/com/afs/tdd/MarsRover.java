@@ -16,6 +16,8 @@ public class MarsRover {
             moveForward();
         } else if (command == Command.L) {
             turnLeft();
+        } else if (command == Command.R) {
+            turnRight();
         }
     }
 
@@ -48,7 +50,29 @@ public class MarsRover {
         } else if (currentDirection == Direction.E) {
             newDirection = Direction.N;
         } else {
-            // 保持当前方向
+            newDirection = currentDirection;
+        }
+
+        currentLocation = new Location(
+                currentLocation.getX(),
+                currentLocation.getY(),
+                newDirection
+        );
+    }
+
+    private void turnRight() {
+        Direction newDirection;
+        Direction currentDirection = currentLocation.getDirection();
+
+        if (currentDirection == Direction.N) {
+            newDirection = Direction.E;
+        } else if (currentDirection == Direction.E) {
+            newDirection = Direction.S;
+        } else if (currentDirection == Direction.S) {
+            newDirection = Direction.W;
+        } else if (currentDirection == Direction.W) {
+            newDirection = Direction.N;
+        } else {
             newDirection = currentDirection;
         }
 
