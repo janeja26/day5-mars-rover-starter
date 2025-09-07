@@ -106,5 +106,22 @@ class DemoTest {
         assertEquals(Direction.E, currentLocation.getDirection());
     }
 
+    @Test
+    void should_face_N_when_execute_command_L_given_initial_position_0_0_E() {
+        // Given
+        MarsRover marsRover = new MarsRover(new Location(0, 0, Direction.E));
+
+        // When
+        marsRover.executeCommand(Command.L);
+
+        // Then
+        Location currentLocation = marsRover.getCurrentLocation();
+        assertEquals(0, currentLocation.getX());
+        assertEquals(0, currentLocation.getY());
+        assertEquals(Direction.N, currentLocation.getDirection());
+    }
+
+
+
     }
 
